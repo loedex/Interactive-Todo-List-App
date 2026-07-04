@@ -1,9 +1,15 @@
-const taskInput = document.getElementById('task-input');
-const addBtn = document.getElementById('add-btn');
-const taskList = document.getElementById('task-list');
+const inputBox = document.getElementById('input-box');
+const listContainer = document.getElementById('list-container');
 
 let tasks = [];
 let currentFilter = "all";
+
+//Adding Task
+inputBox.addEventListener("keydown", (e)=>{
+    if(e.target === "Enter"){
+        addTask();
+    }
+});
 
 
 function addTask(params) {
