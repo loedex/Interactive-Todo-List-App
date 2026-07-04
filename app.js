@@ -6,7 +6,7 @@ let currentFilter = "all";
 
 //Adding Task
 inputBox.addEventListener("keydown", (e)=>{
-    if(e.target === "Enter"){
+    if(e.key === "Enter"){
         addTask();
     }
 });
@@ -24,7 +24,7 @@ function addTask() {
         status: false
     };
     tasks.push(newTask)
-    taskInput.value="";
+    inputBox.value="";
     renderTasks();
 }
 
@@ -42,13 +42,13 @@ function renderTasks() {
         return true;
     });
     if(filteredTasks.length === 0){
-        taskList.innerHTML = `<p>No Tasks here yet</p>`;
+        listContainer.innerHTML = `<p>No Tasks here yet</p>`;
         return;
     }
     filteredTasks.forEach((t)=>{
         const li = document.createElement('li');
         li.textContent = t.text;
-        li.dataset.id = t.d;
+        li.dataset.id = t.id;
         if(t.status === "completed"){
             li.classList.add("checked");
         }
