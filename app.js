@@ -21,7 +21,7 @@ function addTask() {
     const newTask = {
         id: Date.now(),
         text: text,
-        completed: false
+        status: false
     };
     tasks.push(newTask)
     taskInput.value="";
@@ -29,13 +29,10 @@ function addTask() {
 }
 
 function renderTasks() {
-    taskList.innerHTML=``;
+    listContainer.innerHTML=``;
     let filteredTasks = tasks.filter((t)=>{
-        if(currentFilter === "active"){
-            return t.completed === false;
-        }
         if(currentFilter === "completed"){
-            return t.completed === true;
+            return t.status === "completed";
         }
         return true;
     });
@@ -45,12 +42,16 @@ function renderTasks() {
     }
     filteredTasks.forEach((t)=>{
         const li = document.createElement('li');
-        li.className = t.completed ? "task-item completed" : "task-item";
-        li.innerHTML = `<span class="task-text">${t.text}</span>
-        <button class="complete-btn" data-id="${t.id}">${t.completed ? "Undo" : "Complete"}</button>
-        <button class="delete-btn" data-id="${t.id}">Delete</button>
-        `;
-        taskList.appendChild(li);
+        li.textContent = t.text;
+        li.dataset.id = t.d;
+        if(t.status === "completed"){
+            li.classList.add("checked");
+        }
+        const span = document.createElement("span");
+        span.innerHTML = "\u00d7";
+        li.appendChild(span);
+
+        listContainer.appendChild(li);
     });
     
 }
