@@ -12,8 +12,8 @@ inputBox.addEventListener("keydown", (e)=>{
 });
 
 
-function addTask(params) {
-    const text = taskInput.value.trim();
+function addTask() {
+    const text = inputBox.value.trim();
     if(text===""){
         alert("PLease enter a task first");
         return;
@@ -25,7 +25,6 @@ function addTask(params) {
     };
     tasks.push(newTask)
     taskInput.value="";
-    saveTasks();
     renderTasks();
 }
 
