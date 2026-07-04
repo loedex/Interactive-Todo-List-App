@@ -28,6 +28,11 @@ function addTask() {
     renderTasks();
 }
 
+function setFilter(filterType) {
+    currentFilter = filterType;
+    renderTasks();
+    
+}
 function renderTasks() {
     listContainer.innerHTML=``;
     let filteredTasks = tasks.filter((t)=>{
@@ -56,66 +61,20 @@ function renderTasks() {
     
 }
 
-function toggleComplete(id) {
-    tasks = tasks.map((t)=>{
-        if(t.id === id){
-            return {...t,completed:!t.completed};
-        }
-        return t;
-    });
+
+listContainer.addEventListener("click",(e)=>{
+    const clickedElement = e.target;
+    const liElement = clickedElement.closest("li") ;
+    if(!liElement) return;
+    const clickedId = Number(liElement.dataset.id);
+
+    if(clickedElement.tagName === "LI"){
+        const targetTask = tasks.find(t  => t.id === clickedId);
+        targetTask.status = targetTask.status === "completed" ? "active" : "completed";
+    }
+    else if(clickedElement.tagName === "SPAN"){
+        tasks = tasks.filter(t => t.id !== clickedId);
+    }
     renderTasks();
-    saveTasks();
-}
-
-function deleteTask(id) {
-    tasks = tasks.filter((t)=>{
-        return t.id !== id;
-    });
-    renderTasks();
-    saveTasks();
-}
-
-
-
-addBtn.addEventListener("click", addTask);
-taskInput.addEventListener("keydown",(e)=>{
-    if(e.key === "Enter"){
-        addTask();
-    }
 });
-
-taskList.addEventListener("click",(e)=>{
-    const clickedBtn = e.target;
-    const taskId = Number(clickedBtn.dataset.id);
-    if(clickedBtn.classList.contains("complete-btn")){
-        toggleComplete(taskId);
-    }
-    if(clickedBtn.classList.contains("delete-btn")){
-        deleteTask(taskId);
-    }
-});
-
-const filterBtns = document.querySelectorAll(".filter-btn");
-
-filterBtns.forEach((btn)=>{
-    btn.addEventListener("click",()=>{
-        currentFilter = btn.dataset.filter;
-        filterBtns.forEach((b)=>{
-            b.classList.remove("active-filter");
-        });
-        btn.classList.add("active-filter");
-        renderTasks();
-    })
-})
-
-//Save to local storage
-function saveTasks() {
-    localStorage.setItem("tasks",JSON.stringify(tasks));
-}
-//load from local storage on page start
-const savedTasks = localStorage.getItem("tasks");
-if(savedTasks !== null){
-    tasks = JSON.parse(savedTasks);
-}
-renderTasks();
 
